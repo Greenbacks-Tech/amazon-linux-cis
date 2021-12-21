@@ -234,13 +234,13 @@ def remove_insecure_clients():
         Package(package).remove()
 
 
-def configure_host_network_params():
-    """3.1 Network Parameters(Host Only)"""
-    PropertyFile('/etc/sysctl.conf', ' = ').override({
-        'net.ipv4.ip_forward': '0',
-        'net.ipv4.conf.all.send_redirects': '0',
-        'net.ipv4.conf.default.send_redirects': '0',
-    }).write()
+# def configure_host_network_params():
+#     """3.1 Network Parameters(Host Only)"""
+#     PropertyFile('/etc/sysctl.conf', ' = ').override({
+#         'net.ipv4.ip_forward': '0',
+#         'net.ipv4.conf.all.send_redirects': '0',
+#         'net.ipv4.conf.default.send_redirects': '0'
+#     }).write()
 
 
 def configure_network_params():
@@ -258,7 +258,15 @@ def configure_network_params():
         'net.ipv4.icmp_ignore_bogus_error_responses': '1',
         'net.ipv4.conf.all.rp_filter': '1',
         'net.ipv4.conf.default.rp_filter': '1',
-        'net.ipv4.tcp_syncookies': '1'
+        'net.ipv4.tcp_syncookies': '1',
+        'net.ipv4.ip_forward': '0',
+        'net.ipv4.conf.all.send_redirects': '0',
+        'net.ipv4.conf.default.send_redirects': '0',
+        'net.ipv6.conf.all.accept_source_route': '0',
+        'net.ipv6.conf.all.accept_ra': '0',
+        'net.ipv6.conf.default.accept_ra': '0',
+        'net.ipv6.conf.all.accept_redirects': '0',
+        'net.ipv6.conf.default.accept_redirects': '0'
     }).write()
 
 
@@ -577,9 +585,9 @@ def main():
     remove_insecure_clients()
 
     # 3 Network Configuration
-    configure_host_network_params()
+   # configure_host_network_params()
     configure_network_params()
-    configure_ipv6_params()
+   # configure_ipv6_params()
     if not args.disable_tcp_wrappers:
         configure_tcp_wrappers(args.clients)
     disable_uncommon_protocols()
